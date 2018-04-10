@@ -52,8 +52,7 @@ class MySpider(BaseSpider):
         url = response.url
 
         print('\n')
-        # print('=====scraping page number :',count//8,'=====')
-        print('===={} out of {} done'.format(page_count,total_page))
+        print('{} out of {} done'.format(page_count,total_page))
         print('-----URL :',url)
 
         res = response.xpath('//ul[contains(@class,"clearfix grid")]/li').extract()
@@ -63,9 +62,9 @@ class MySpider(BaseSpider):
                 tree = html.fromstring(temp)
                 res1 = tree.xpath('//span/text()')[1]+tree.xpath('//span/text()')[2]
                 res2 = tree.xpath('//span/text()')[7]
-                res3 = tree.xpath('//span/text()')[6]
+                res3 = tree.xpath('//span/text()')[6] #respondent
                 res4 = tree.xpath('//span/text()')[8]
-                res5 = tree.xpath('//span/text()')[5]
+                res5 = tree.xpath('//span/text()')[5] #petitioner
 
                 try:
                     next_date = ''
@@ -108,8 +107,12 @@ class MySpider(BaseSpider):
                     if 'Advocate' in span_temp:
                         advocate = span_temp.split(':')[1].strip()
 
-                respondent = res3.strip()
+                respondent = res3.strip() 
+                respondent = re.sub('V.*?0', '', respondent)
+                respondent = ('').join(respondent.split())
+                respondent = re.sub('V.*?.', '', respondent)
                 petitioner = res5.strip()
+                import pdb; pdb.set_trace() 
                 
                 if((res4.find("Court")) != -1):
                     court_number = res4.split(':')[1].strip()
@@ -150,4 +153,4 @@ class MySpider(BaseSpider):
                 f.write(final_js)
                 f.write('\n')
 
-        print('===={} Page Successfully Scraped===='.format(page_count))
+        print('{} th Page Successfully Scraped===='.format(page_count))

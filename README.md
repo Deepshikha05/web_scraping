@@ -1,6 +1,4 @@
-# Delhi HIgh Court Website Scraper #
-
-
+# Delhi High Court Website Scraper #
 
 # README #
 
@@ -26,6 +24,9 @@ This project uses splash to first render a webpage in docker and then parse it u
 ### Dependencies ###
 `scrapy`
 `scrapy-splash`
+`requests`
+`lxml`
+`bs4`
 
  The exact dependencies can be downloaded by running `pip install -r requirements.txt`
 
@@ -33,7 +34,6 @@ This project uses splash to first render a webpage in docker and then parse it u
 
 Run these:
 `sudo apt-get install libxml2-dev libxslt1-dev imagemagick libjpeg-dev python3-dev python3-setuptools pdftk`
-
 
 
 ### Common Issues ###
@@ -53,17 +53,3 @@ Run these:
 * run the virtual environment by moving to the project directory `cd scraping_all_news/`
 * a folder `venv` should be visible now. Run `source venv/bin/activate` to start the virtual environment
 * Now `cd scraping_all_news` to get the `urls.txt` file and enter the urls to be parsed. Run the spider by `scrapy crawl scraping_all_news`. The scraped pdfs will appear in the parent folder under `Scraped Items`
-
-### Steps for adding New Server ###
-* Clone project on new server
-* Install dependencies on new server like docker,mysql etc.
-* Make a new user at live db and add details to config.py on new server
-* Add an entry in `server` table in live DB.
-* Add `SERVER=<pk_server>` in config.py where pk_server is primary key for new server in server table
-* set up cron for running RunSpider in new server.
-
-
-## Converting Images to jpeg - Use this for every input image / pdf.
-* convert -density 96 -colorspace sRGB oldimagename newimagename
-* Check currently not run scrapers:
-   * SELECT * FROM `daily_pub_download` WHERE run_date='2018-02-23' and is_scraped=0
