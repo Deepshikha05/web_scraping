@@ -51,9 +51,7 @@ class MySpider(BaseSpider):
         page_count = response.meta['page_count']
         url = response.url
 
-        print('\n')
-        print('{} out of {} done'.format(page_count,total_page))
-        print('-----URL :',url)
+        # print('\n')
 
         res = response.xpath('//ul[contains(@class,"clearfix grid")]/li').extract()
 
@@ -109,10 +107,10 @@ class MySpider(BaseSpider):
 
                 respondent = res3.strip() 
                 respondent = re.sub('V.*?0', '', respondent)
-                respondent = ('').join(respondent.split())
+                respondent = (' ').join(respondent.split())
                 respondent = re.sub('V.*?.', '', respondent)
                 petitioner = res5.strip()
-                import pdb; pdb.set_trace() 
+                # import pdb; pdb.set_trace() 
                 
                 if((res4.find("Court")) != -1):
                     court_number = res4.split(':')[1].strip()
@@ -147,10 +145,17 @@ class MySpider(BaseSpider):
             except:
                 tb = traceback.format_exc()
                 print(tb)
-                import pdb; pdb.set_trace()
+                #maintain a error log
+                with open('error.log','a') as f:
+                    f.write(tb)
+                    f.write('\n')
+                # import pdb; pdb.set_trace()
 
             with open('json_file.txt','a') as f:
                 f.write(final_js)
                 f.write('\n')
 
-        print('{} th Page Successfully Scraped===='.format(page_count))
+        print('================================================')
+        print('{}th Page Scraped'.format(page_count))
+        print('---------URL :',url)
+        print('================================================')
